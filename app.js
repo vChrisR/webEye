@@ -14,9 +14,10 @@ var app = express();
 
 var ampqExchange;
 
-var amqpConnection = amqp.createConnection({ host: 'localhost', login: 'guest', password: 'guest' }, { defaultExchangeName: 'webEye' });
+var amqpConnection = amqp.createConnection({ host: process.env.WEBEYE_RABBIT_SERVER, login: 'guest', password: 'guest' });
 amqpConnection.on('ready', function () {
-	amqpExchange = amqpConnection.exchange();
+	amqpExchange = amqpConnection.exchange('webEye', { type: "topic", confirm: true, durable: true } );
+//	amqpExchange = amqpConnection.exchange();
 	app.set('amqpExchange', amqpExchange);
 	debug('AMQP Connected');
 });
