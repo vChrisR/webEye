@@ -40,17 +40,15 @@ function doCallback(callbackUrl, retryCount) {
 		"context": "webEye",
 		"target_url": ""
 	}
-	
+	retryCount--;
 	rest.postJson(callbackUrl, callbackPayload)
 		.on('error', function(err, response) {
 			if (retryCount > 0) {	
-				retryCount--;
 				debug("Callback to " +callbackUrl +" failed. Retrying. Retry countdown: "+retryCount);
-				setInterval(doCallback, 120000, callbackUrl, retryCount);	
+				setTimeout(doCallback, 120000, callbackUrl, retryCount);
 			} else {
 				console.log("Callback to " +callbackUrl +" failed. Retry count reached. callback cancelled");
-
-			}			
+			}
 		});
 }
 
