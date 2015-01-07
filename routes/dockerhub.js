@@ -1,4 +1,5 @@
 var debug = require('debug')('webEye');
+var rest = require('restler');
 var express = require('express');
 var router = express.Router();
 
@@ -8,10 +9,9 @@ router.post('/', function(req, res) {
 
   var amqpExchange = req.app.get('amqpExchange');
   var messageToRelay = req.body;
-
-//TODO: Check if message originates from docker hubhub to make sure nobody is messing with us
-
   var validMessage =  Boolean(messageToRelay.callback_url && messageToRelay.push_data && messageToRelay.repository);
+
+//TODO: check images in webhook payload with images on index.docker.io to make sure this is a valid dockerwebhook message.
   if (! validMessage) {
 	resBody = { result: "invalid message" };
 	res.statusCode = 400;
@@ -24,14 +24,34 @@ router.post('/', function(req, res) {
 
   if (amqpExchange && validMessage) {
 	  debug("Relaying message using AMQP...");
-	  setImmediate(function () {
-		amqpExchange.publish("webeye.docker.hub", messageToRelay, {contentType: 'application/json'}, {})
-	  } );
+          amqpExchange.publish("webeye.docker.hub", messageToRelay, {contentType: 'application/json'}, {}, function(e) { console.log("message posted")})
 	  resBody = { result: "success" };
 	  res.statusCode = 200;
   }
 
-  res.json(resBody); 
+  res.json(resBody);
+  doCallback(messageToRelay.callback_url, 60);
 });
+
+function doCallback(callbackUrl, retryCount) { 
+	var callbackPayload = {
+		"state": "success",
+  		"description": "Webhook relayed to AMQP bus.",
+		"context": "webEye",
+		"target_url": ""
+	}
+	
+	rest.postJson(callbackUrl, callbackPayload)
+		.on('error', function(err, response) {
+			if (retryCount > 0) {	
+				debug("Callback to " +callbackUrl +" failed. Retrying. Retry countdown: "+retryCount);
+				retryCount--;
+				setInterval(doCallback, 120000, callbackUrl);	
+			} else {
+				Console.log("Callback to " +callbackUrl +" failed. Retry count reached. callback cancelled");
+
+			}			
+		});
+}
 
 module.exports = router;
