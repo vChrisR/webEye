@@ -12,6 +12,7 @@ router.post('/', function(req, res) {
   var validMessage =  Boolean(messageToRelay.callback_url && messageToRelay.push_data && messageToRelay.repository);
 
 //TODO: check images in webhook payload with images on index.docker.io to make sure this is a valid dockerwebhook message.
+
   if (! validMessage) {
 	resBody = { result: "invalid message" };
 	res.statusCode = 400;

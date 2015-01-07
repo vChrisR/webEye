@@ -14,10 +14,14 @@ var app = express();
 
 var ampqExchange;
 
-var amqpConnection = amqp.createConnection({ host: process.env.RABBIT_PORT_5672_TCP_ADDR || 'localhost', port: process.env.RABBIT_PORT_5672_PORT || 5672, login: 'guest', password: 'guest' });
+var amqpHost = process.env.RABBIT_PORT_5672_TCP_ADDR || 'localhost';
+var amqpPort = process.env.RABBIT_PORT_5672_PORT || 5672;
+
+debug("Using AMQP host:" +amqpHost +":" + amqpPort);
+
+var amqpConnection = amqp.createConnection({ host: amqpHost, port: amqpPort, login: 'guest', password: 'guest' });
 amqpConnection.on('ready', function () {
 	amqpExchange = amqpConnection.exchange('webEye', { type: "topic", confirm: true, durable: true } );
-//	amqpExchange = amqpConnection.exchange();
 	app.set('amqpExchange', amqpExchange);
 	debug('AMQP Connected');
 });

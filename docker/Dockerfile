@@ -7,6 +7,7 @@ ENV HOME /root
 CMD ["/sbin/my_init"]
 
 ADD default /etc/nginx/sites-enabled/default
+ADD rabbitmq-env.conf /etc/nginx/main.d/rabbitmq-env.conf
 RUN rm -f /etc/service/nginx/down && cd /home/app && git clone https://github.com/vChrisR/webEye.git
 RUN chown app /home/app/webEye
 
