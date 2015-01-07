@@ -14,7 +14,7 @@ var app = express();
 
 var ampqExchange;
 
-var amqpConnection = amqp.createConnection({ host: process.env.WEBEYE_RABBIT_SERVER, login: 'guest', password: 'guest' });
+var amqpConnection = amqp.createConnection({ host: process.env.WEBEYE_RABBIT_SERVER || 'localhost', login: 'guest', password: 'guest' });
 amqpConnection.on('ready', function () {
 	amqpExchange = amqpConnection.exchange('webEye', { type: "topic", confirm: true, durable: true } );
 //	amqpExchange = amqpConnection.exchange();
