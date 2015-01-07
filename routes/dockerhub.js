@@ -30,7 +30,7 @@ router.post('/', function(req, res) {
   }
 
   res.json(resBody);
-  doCallback(messageToRelay.callback_url, 60);
+  setImmediate(doCallback, messageToRelay.callback_url, 60);
 });
 
 function doCallback(callbackUrl, retryCount) { 
@@ -44,11 +44,11 @@ function doCallback(callbackUrl, retryCount) {
 	rest.postJson(callbackUrl, callbackPayload)
 		.on('error', function(err, response) {
 			if (retryCount > 0) {	
-				debug("Callback to " +callbackUrl +" failed. Retrying. Retry countdown: "+retryCount);
 				retryCount--;
-				setInterval(doCallback, 120000, callbackUrl);	
+				debug("Callback to " +callbackUrl +" failed. Retrying. Retry countdown: "+retryCount);
+				setInterval(doCallback, 120000, callbackUrl, retryCount);	
 			} else {
-				Console.log("Callback to " +callbackUrl +" failed. Retry count reached. callback cancelled");
+				console.log("Callback to " +callbackUrl +" failed. Retry count reached. callback cancelled");
 
 			}			
 		});
