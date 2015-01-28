@@ -6,6 +6,9 @@ ENV HOME /root
 # Use baseimage-docker's init process.
 CMD ["/sbin/my_init"]
 
+RUN mkdir /certs
+ADD webeye.crt /certs/webeye.crt
+ADD webeye.key /certs/webeye.key
 ADD default /etc/nginx/sites-enabled/default
 ADD rabbitmq-env.conf /etc/nginx/main.d/rabbitmq-env.conf
 RUN rm -f /etc/service/nginx/down && cd /home/app && git clone https://github.com/vChrisR/webEye.git
@@ -16,3 +19,4 @@ ENV DEBUG webEye
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 EXPOSE 80
+EXPOSE 443
