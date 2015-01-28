@@ -9,7 +9,6 @@ CMD ["/sbin/my_init"]
 RUN mkdir /certs
 ADD webeye.crt /certs/webeye.crt
 ADD webeye.key /certs/webeye.key
-ADD passphrase /certs/passphrase
 
 ADD default /etc/nginx/sites-enabled/default
 ADD rabbitmq-env.conf /etc/nginx/main.d/rabbitmq-env.conf
