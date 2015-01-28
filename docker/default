@@ -32,7 +32,6 @@ server {
 	ssl on;
 	ssl_certificate /certs/webeye.crt;
 	ssl_certificate_key /certs/webeye.key;
-	ssl_password_file /certs/passphrase
 
 	ssl_session_timeout 5m;
 	ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
