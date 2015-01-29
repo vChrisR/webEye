@@ -31,7 +31,10 @@ router.post('/', function(req, res) {
   }
 
   res.json(resBody);
-  setImmediate(doCallback, messageToRelay.callback_url, 60);
+  
+  if (res.statusCode == 200) {
+  	setImmediate(doCallback, messageToRelay.callback_url, 60);
+  }
 });
 
 function doCallback(callbackUrl, retryCount) { 
