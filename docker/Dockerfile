@@ -11,7 +11,7 @@ ADD webeye.crt /certs/webeye.crt
 ADD webeye.key /certs/webeye.key
 
 ADD default /etc/nginx/sites-enabled/default
-ADD rabbitmq-env.conf /etc/nginx/main.d/rabbitmq-env.conf
+ADD env.conf /etc/nginx/main.d/env.conf
 RUN rm -f /etc/service/nginx/down && cd /home/app && git clone https://github.com/vChrisR/webEye.git
 RUN chown app /home/app/webEye
 
