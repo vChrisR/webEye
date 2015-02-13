@@ -24,4 +24,6 @@ I recently added some functionality which is called "magic Button". The point is
 
 { "event": "something happened"}
 
+The routing key for the magic button Q is: webeye.magic.button
+
 Now the AMQP consumer can read the event and act accordingly.
