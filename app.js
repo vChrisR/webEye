@@ -23,7 +23,7 @@ debug("Using AMQP host:" +amqpHost +":" + amqpPort);
 
 var amqpConnection = amqp.createConnection({ host: amqpHost, port: amqpPort, login: 'guest', password: 'guest' });
 amqpConnection.on('ready', function () {
-	amqpExchange = amqpConnection.exchange('webEye', { type: "topic", confirm: true, durable: true } );
+	amqpExchange = amqpConnection.exchange('webEye', { type: "topic", confirm: true, durable: true, autoDelete: false } );
 	app.set('amqpExchange', amqpExchange);
 	debug('AMQP Connected');
 });
