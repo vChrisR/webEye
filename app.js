@@ -10,6 +10,7 @@ var amqp = require('amqp');
 var routes = require('./routes/index');
 var dockerhub = require('./routes/dockerhub.js');
 var magicbutton = require('./routes/magicbutton.js');
+var vrops = require('./routes/vrops.js');
 
 var app = express();
 
@@ -42,6 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/dockerhub', dockerhub);
 app.use('/magicbutton', magicbutton);
+app.use('/vrops', vrops);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
