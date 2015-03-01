@@ -13,7 +13,6 @@ server {
 	passenger_app_type node;
 	passenger_startup_file bin/www;
 	passenger_min_instances 1;
-	passenger_pre_start http://localhost/;
 }
 
 #HTTPS server
@@ -40,3 +39,5 @@ server {
 	#ssl_ciphers "HIGH:!aNULL:!MD5 or HIGH:!aNULL:!MD5:!3DES";
 	#ssl_prefer_server_ciphers on;
 }
+
+passenger_pre_start http://localhost/;
