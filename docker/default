@@ -12,6 +12,8 @@ server {
 
 	passenger_app_type node;
 	passenger_startup_file bin/www;
+	passenger_min_instances 1;
+	passenger_pre_start http://localhost/
 }
 
 #HTTPS server
